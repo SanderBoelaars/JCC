@@ -9,7 +9,15 @@ package verzamelapp;
  *
  * @author Sander
  */
-public abstract class Voorwerp implements Comparable{
-    
-    public Voorwerp(){};    
+public abstract class Voorwerp implements Comparable {
+
+    private String naam;
+
+    public Voorwerp(String naam) {
+        this.naam = naam;
+    }
+
+    public String getNaam() {
+        return this.naam;
+    }
 }

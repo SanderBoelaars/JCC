@@ -7,6 +7,9 @@ package verzamelapp;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import verzamelapp.Set;
+import verzamelapp.Voorwerp;
 
 /**
  *
@@ -19,12 +22,18 @@ public class VerzamelApp {
      */
     private static String answer;
 
+    private static ArrayList<Set> sets;
+    private static ArrayList<Voorwerp> voorwerpen;
+
     public static void main(String[] args) {
+        sets = new ArrayList<Set>();
+        voorwerpen = new ArrayList<Voorwerp>();
         ShowMenu();
-        MenuInteractie();
+
     }
 
     private static void ShowMenu() {
+        System.out.println("-------------------------------------");
         System.out.println("Menu (kies een optie):");
         System.out.println("[1] Nieuwe postzegel");
         System.out.println("[2] Nieuwe bierdop");
@@ -35,10 +44,11 @@ public class VerzamelApp {
         System.out.println("[7] Sorteer voorwerpen");
         System.out.println("[8] Sorteer postzegels");
         System.out.println("[9] Exit");
-        Answer();
+        Input();
+        MenuInteractie();
     }
 
-    private static String Answer() {
+    private static String Input() {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 
         try {
@@ -84,25 +94,57 @@ public class VerzamelApp {
 
     private static void NieuwePostzegel() {
         System.out.println("-------------------------------------");
+        if (sets.isEmpty()) {
+            System.out.println("Geen set beschikbaar om deze postzegel aan toe te voegen.");
+            ShowMenu();
+        }
+        int counter = 1;
+        for (Set set : sets) {
+            System.out.println("[" + counter + "] " + set.getNaam() + " uit " + set.getJaartal());
+            counter++;
+        }
+        int index = Integer.parseInt(Input());
+        Set set = sets.get(index - 1);
+
         System.out.println("Nieuwe Postzegel");
+        System.out.println("Postzegel naam:");
+        String naam = Input();
         System.out.println("Postzegel lengte (mm):");
-        String lengte = Answer();
+        String lengte = Input();
         System.out.println("Postzegel breedte (mm):");
-        String breedte = Answer();
-        Postzegel postzegel = new Postzegel(Integer.parseInt(lengte), Integer.parseInt(breedte));
+        String breedte = Input();
+
+        Postzegel postzegel = new Postzegel(naam, Integer.parseInt(lengte), Integer.parseInt(breedte));
+        voorwerpen.add(postzegel);
+        set.AddVoorwerp(postzegel);
         System.out.println("De postzegel is toegevoegd.");
-        System.out.println("-------------------------------------");
         ShowMenu();
     }
 
     private static void NieuweBierdop() {
         System.out.println("-------------------------------------");
+        if (sets.isEmpty()) {
+            System.out.println("Geen set beschikbaar om deze bierdop aan toe te voegen.");
+            ShowMenu();
+        }
+        int counter = 1;
+        for (Set set : sets) {
+            System.out.println("[" + counter + "] " + set.getNaam() + " uit " + set.getJaartal());
+            counter++;
+        }
+        int index = Integer.parseInt(Input());
+        Set set = sets.get(index - 1);
+
         System.out.println("Nieuwe Bierdop");
+        System.out.println("Bierdop naam:");
+        String naam = Input();
         System.out.println("Bierdop merk:");
-        String merk = Answer();
-        Bierdop bierdop = new Bierdop(merk);
+        String merk = Input();
+
+        Bierdop bierdop = new Bierdop(naam, merk);
+        voorwerpen.add(bierdop);
+        set.AddVoorwerp(bierdop);
         System.out.println("Bierdop is toegevoegd.");
-        System.out.println("-------------------------------------");
         ShowMenu();
     }
 
@@ -110,19 +152,45 @@ public class VerzamelApp {
         System.out.println("-------------------------------------");
         System.out.println("Nieuwe Set");
         System.out.println("Set naam:");
-        String naam = Answer();
+        String naam = Input();
         System.out.println("Set jaartal:");
-        String jaartal = Answer();
+        String jaartal = Input();
         Set set = new Set(naam, Integer.parseInt(jaartal));
+        sets.add(set);
         System.out.println("Set is toegevoegd.");
-        System.out.println("-------------------------------------");
         ShowMenu();
     }
 
     private static void VerwijderPostzegel() {
         System.out.println("-------------------------------------");
         System.out.println("Verwijder Postzegel");
-        
+        System.out.println("Kies een set om een voorwerp te verwijderen");
+
+        int counter = 1;
+        for (Set set : sets) {
+            System.out.println("[" + counter + "] " + set.getNaam() + " uit " + set.getJaartal());
+            counter++;
+        }
+        int index = Integer.parseInt(Input());
+        Set set = sets.get(index - 1);
+
+        int counter2 = 1;
+        for (Voorwerp voorwerp : set.getVoorwerpen()) {
+            if (voorwerp instanceof Postzegel) {
+                Postzegel postzegel = (Postzegel) voorwerp;
+                System.out.println("[" + counter2 + "] " + postzegel.getNaam() + " (" + postzegel.getBreedte() + "/" + postzegel.getLengte() + ")");
+                counter2++;
+            } else if (voorwerp instanceof Bierdop) {
+                Bierdop bierdop = (Bierdop) voorwerp;
+                System.out.println("[" + counter2 + "] " + bierdop.getNaam() + " (" + bierdop.getMerk() + ")");
+                counter2++;
+            }
+        }
+        int index2 = Integer.parseInt(Input());
+        Voorwerp voorwerp = set.getVoorwerpen().remove(index2-1);
+        voorwerpen.remove(voorwerp);
+        System.out.println("Voorwerp is verwijderd.");
+        ShowMenu();
     }
 
     private static void VerwijderBierdop() {
@@ -142,6 +210,6 @@ public class VerzamelApp {
     }
 
     private static void Exit() {
-
+        System.exit(0);
     }
 }

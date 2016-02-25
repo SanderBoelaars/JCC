@@ -14,9 +14,11 @@ public class Postzegel extends Voorwerp {
     private int lengte;
     private int breedte;
 
-    public Postzegel(int lengte, int breedte) {
+    public Postzegel(String naam, int lengte, int breedte) {
+        super(naam);
         this.lengte = lengte;
         this.breedte = breedte;
+        
     }
 
     public int getLengte() {

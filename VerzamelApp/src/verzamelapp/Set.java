@@ -40,7 +40,7 @@ public class Set {
         this.jaartal = jaartal;
     }
 
-    public ArrayList getVoorwerpen() {
+    public ArrayList<Voorwerp> getVoorwerpen() {
         return voorwerpen;
     }
 
@@ -64,10 +64,10 @@ public class Set {
     public ArrayList<Postzegel> ShowPostzegels() {
 
         ArrayList<Postzegel> postzegels = new ArrayList<>();
-        for (Voorwerp v : voorwerpen) {
-            if (v instanceof Postzegel) {
-                Postzegel p = (Postzegel) v;
-                postzegels.add(p);
+        for (Voorwerp voorwerp : voorwerpen) {
+            if (voorwerp instanceof Postzegel) {
+                Postzegel postzegel = (Postzegel) voorwerp;
+                postzegels.add(postzegel);
             }
         }
         Collections.sort(postzegels);

@@ -13,12 +13,13 @@ public class Bierdop extends Voorwerp {
 
     private String merk;
 
-    public Bierdop(String merk) {
+    public Bierdop(String naam, String merk) {
+        super(naam);
         this.merk = merk;
     }
 
     public String getMerk() {
-        return merk;
+        return this.merk;
     }
 
     @Override
