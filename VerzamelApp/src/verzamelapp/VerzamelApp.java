@@ -55,7 +55,7 @@ public class VerzamelApp {
             System.out.println(s.getNaam() + " [" + voorwerpen.size() + " voorwerpen] - jaar " + s.getJaartal());
             
             // Print de voorwerpen uit de set
-            if (voorwerpen.size() == 0) {
+            if (voorwerpen.isEmpty()) {
                 System.out.println(tabIndent + "Geen voorwerpen");
             } else {
                 for (Voorwerp v : voorwerpen) {
