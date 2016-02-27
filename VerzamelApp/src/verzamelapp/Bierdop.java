@@ -21,10 +21,4 @@ public class Bierdop extends Voorwerp {
     public String getMerk() {
         return this.merk;
     }
-
-    @Override
-    public int compareTo(Object o) {
-        Bierdop b = (Bierdop)o;
-        return this.merk.compareTo(b.merk);
-    }
 }

@@ -9,7 +9,7 @@ package verzamelapp;
  *
  * @author Sander
  */
-public class Postzegel extends Voorwerp {
+public class Postzegel extends Voorwerp implements Comparable {
 
     private int lengte;
     private int breedte;

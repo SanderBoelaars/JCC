@@ -12,7 +12,7 @@ import java.util.Collections;
  *
  * @author Sander
  */
-public class Set {
+public class Set implements Comparable {
 
     private String naam;
     private int jaartal;
@@ -48,20 +48,19 @@ public class Set {
         this.voorwerpen = voorwerpen;
     }
 
-    public void AddVoorwerp(Voorwerp voorwerp) {
+    public void addVoorwerp(Voorwerp voorwerp) {
         this.voorwerpen.add(voorwerp);
     }
 
-    public void RemoveVoorwerp(Voorwerp voorwerp) {
+    public void removeVoorwerp(Voorwerp voorwerp) {
         this.voorwerpen.remove(voorwerp);
     }
 
-    public ArrayList<Voorwerp> ShowVoorwerpen() {
-        Collections.sort(voorwerpen);
+    public ArrayList<Voorwerp> showVoorwerpen() {
         return (ArrayList<Voorwerp>) Collections.unmodifiableList(this.voorwerpen);
     }
 
-    public ArrayList<Postzegel> ShowPostzegels() {
+    public ArrayList<Postzegel> showPostzegels() {
 
         ArrayList<Postzegel> postzegels = new ArrayList<>();
         for (Voorwerp voorwerp : voorwerpen) {
@@ -72,5 +71,18 @@ public class Set {
         }
         Collections.sort(postzegels);
         return (ArrayList<Postzegel>) Collections.unmodifiableList(postzegels);
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        Set s = (Set) o;
+
+        if (this.jaartal < s.jaartal) {
+            return -1;
+        } else if (this.jaartal == s.jaartal) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 }
