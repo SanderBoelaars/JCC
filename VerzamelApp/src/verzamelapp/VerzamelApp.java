@@ -6,9 +6,11 @@
 package verzamelapp;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Properties;
 import verzamelapp.Set;
 import verzamelapp.Voorwerp;
 
@@ -22,15 +24,25 @@ public class VerzamelApp {
      * @param args the command line arguments
      */
     private static String answer;
-
     private static ArrayList<Set> sets;
     private static ArrayList<Voorwerp> voorwerpen;
 
-    public static void main(String[] args) {
-        sets = new ArrayList<Set>();
-        voorwerpen = new ArrayList<Voorwerp>();
-        showMenu();
+    private static DatabaseMediator mediator;
+    private static Administratie admin;
 
+    public static void main(String[] args) {
+        try {
+            Properties props = new Properties();
+            props.load(new FileInputStream("verzamelapp.properties"));
+
+            admin = new Administratie();
+            mediator = new DatabaseMediator(props);
+            sets = admin.getSets();
+            voorwerpen = admin.getVoorwerpen();
+            showMenu();
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+        }
     }
 
     private static void showMenu() {
@@ -42,9 +54,18 @@ public class VerzamelApp {
         System.out.println("[4] verwijder voorwerp");
         System.out.println("[5] Verwijder set");
         System.out.println("[6] Sorteer collectie");
-        System.out.println("[7] Aflsuiten");
+        System.out.println("[7] Opslaan");
+        System.out.println("[8] Aflsuiten");
         input();
         menuInteractie();
+    }
+
+    public ArrayList<Voorwerp> getVoorwerpen() {
+        return this.voorwerpen;
+    }
+
+    public ArrayList<Set> getSets() {
+        return this.sets;
     }
 
     private static String input() {
@@ -81,8 +102,10 @@ public class VerzamelApp {
                     sorteer();
                     break;
                 case "7":
-                    exit();
+                    save();
                     break;
+                case "8":
+                    exit();
                 default:
                     break;
             }
@@ -350,6 +373,21 @@ public class VerzamelApp {
             throw e;
         } catch (Exception e) {
             error();
+        }
+    }
+
+    private static void save() {
+        admin.reset();
+        for (Voorwerp vw : voorwerpen) {
+            admin.addVoorwerp(vw);
+        }
+        for (Set set : sets) {
+            admin.addSet(set);
+        }
+        try {
+            mediator.save(admin);
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
         }
     }
 
